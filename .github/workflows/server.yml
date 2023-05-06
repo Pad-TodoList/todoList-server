@@ -27,7 +27,7 @@ jobs:
 
   automated-api-tests:
     runs-on: ubuntu-latest
-    environment: server
+    environment: testing
     name: Run Postman tests
     steps:
       - uses: actions/checkout@v3
