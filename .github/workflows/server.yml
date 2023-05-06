@@ -1,4 +1,4 @@
-run-name: Dev workflow - Test and check things
+run-name: Dev workflow - Test and deploy
 
 on:
   push:
@@ -10,7 +10,8 @@ on:
       - develop
 
 jobs:
-  build:
+  build-test:
+    name: Build and test server
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +25,15 @@ jobs:
 
       - name: Build
         run: go build -v ./...
+
+  deploy:
+    name: Deploy server
+    needs: [build-test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy
+        run: echo "this script will deploy the server 🚀"
