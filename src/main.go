@@ -2,21 +2,31 @@ package main
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
-	"strconv"
+	"os"
 	"time"
 
 	route "github.com/Pad-TodoList/todoList-server/src/routes"
 )
 
+func getGoDotEnvVariable(key string) string {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal("Error loading .env file", err.Error())
+	}
+	return os.Getenv(key)
+}
+
 func main() {
-	port := 8080
-	fmt.Printf("server running on port %d\n", port)
+	port := getGoDotEnvVariable("PORT")
+	fmt.Printf("server running on port %s\n", port)
 	router := route.Router()
 	srv := &http.Server{
 		Handler:      router,
-		Addr:         ":" + strconv.Itoa(port),
+		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
