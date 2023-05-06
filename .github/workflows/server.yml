@@ -1,0 +1,53 @@
+run-name: Dev workflow - Test and deploy
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build-test:
+    name: Build and test server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.15'
+
+      - name: Build
+        run: go build -v ./...
+
+  automated-api-tests:
+    runs-on: ubuntu-latest
+    name: Run Postman tests
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key PMAK-64567fcc5dd14b5e26a7456a-0f2dbc0216c504daeebe1e81a4cbe897e3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.15'
+      - name: Run API tests
+        run: |
+          go run src/main.go & postman collection run "${{ github.workspace }}/postman/collections/todoList.json" -e "15037258-1633bb9d-e860-457d-b2dc-57aa7d6aba65" --integration-id "139819-${{ github.run_id }}"
+
+  deploy:
+    name: Deploy server
+    needs: [build-test, automated-api-tests]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy
+        run: echo "this script will deploy the server 🚀"
