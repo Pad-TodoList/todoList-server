@@ -4,7 +4,7 @@ import "github.com/google/uuid"
 
 type UserToken struct {
 	UserId      string `json:"userId"`
-	AccessToken string `json:"acessToken"`
+	AccessToken string `json:"accessToken"`
 }
 
 type User struct {
