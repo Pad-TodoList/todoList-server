@@ -5,6 +5,9 @@ on:
     branches:
       - develop
 
+env:
+  PORT: 8080
+
 jobs:
   build:
     name: Build and test server
