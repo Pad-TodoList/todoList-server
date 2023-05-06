@@ -26,9 +26,22 @@ jobs:
       - name: Build
         run: go build -v ./...
 
+  automated-api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
+        run: |
+          postman collection run "${{ github.workspace }}/postman/collections/todoList.json" -e "15037258-1633bb9d-e860-457d-b2dc-57aa7d6aba65" --integration-id "139819-${{ github.run_id }}"
+
   deploy:
     name: Deploy server
-    needs: [build-test]
+    needs: [build-test, automated-api-tests]
     runs-on: ubuntu-latest
 
     steps:
