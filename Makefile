@@ -2,7 +2,6 @@ CONFIG_FILE=./config/docker/docker-compose.yml
 
 
 start:
-	echo $(CONFIG_FILE)
 	docker-compose -f $(CONFIG_FILE) up --build -d
 
 stop:

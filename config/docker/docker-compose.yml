@@ -1,7 +1,7 @@
 version: "3.9"
 name: TodoList
 services:
-  web:
+  server:
     build:
       context: ../..
       dockerfile: ./config/docker/Dockerfile
