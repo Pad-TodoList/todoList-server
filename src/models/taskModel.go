@@ -8,3 +8,8 @@ type Task struct {
 	Status      string `json:"status"`
 	UserId      string `json:"userId"`
 }
+
+type IdentifiableTask struct {
+	Task
+	Uuid string `json:"uuid"`
+}

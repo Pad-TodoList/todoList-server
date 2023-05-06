@@ -1,7 +1,5 @@
 package models
 
-import "github.com/google/uuid"
-
 type UserToken struct {
 	UserId      string `json:"userId"`
 	AccessToken string `json:"accessToken"`
@@ -17,5 +15,5 @@ type User struct {
 
 type IdentifiableUser struct {
 	User
-	UUID uuid.UUID `json:"uuid"`
+	Uuid string `json:"uuid"`
 }
