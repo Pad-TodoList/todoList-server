@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Pad-TodoList/todoList-server/src/route"
+	route "github.com/Pad-TodoList/todoList-server/src/routes"
 )
 
 func main() {
