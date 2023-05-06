@@ -34,7 +34,7 @@ jobs:
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
       - name: Login to Postman CLI
-        run: postman login --with-api-key {{ secrets.POSTMAN_API_KEY }} #PMAK-64567fcc5dd14b5e26a7456a-0f2dbc0216c504daeebe1e81a4cbe897e3
+        run: echo {{ secrets.POSTMAN_API_KEY }} && postman login --with-api-key {{ secrets.POSTMAN_API_KEY }} #PMAK-64567fcc5dd14b5e26a7456a-0f2dbc0216c504daeebe1e81a4cbe897e3
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
