@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/Pad-TodoList/todoList-server/src/utils"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 
 	route "github.com/Pad-TodoList/todoList-server/src/routes"
 )
 
 func main() {
-	port := 8080
-	fmt.Printf("server running on port %d\n", port)
+	port := utils.GetGoDotEnvVariable("PORT")
+	fmt.Printf("server running on port %s\n", port)
 	router := route.Router()
 	srv := &http.Server{
 		Handler:      router,
-		Addr:         ":" + strconv.Itoa(port),
+		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
