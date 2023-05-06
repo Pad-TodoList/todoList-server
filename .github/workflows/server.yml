@@ -1,4 +1,4 @@
-run-name: Dev workflow - Test and deploy
+run-name: Dev workflow - Build, Test and Deploy
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  build-test:
+  build:
     name: Build and test server
     runs-on: ubuntu-latest
 
@@ -22,8 +22,9 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-  automated-api-tests:
+  tests:
     runs-on: ubuntu-latest
+    environment: testing
     name: Run Postman tests
     steps:
       - uses: actions/checkout@v3
@@ -31,7 +32,7 @@ jobs:
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
       - name: Login to Postman CLI
-        run: postman login --with-api-key PMAK-64567fcc5dd14b5e26a7456a-0f2dbc0216c504daeebe1e81a4cbe897e3
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -42,7 +43,7 @@ jobs:
 
   deploy:
     name: Deploy server
-    needs: [build-test, automated-api-tests]
+    needs: [build, tests]
     runs-on: ubuntu-latest
 
     steps:
