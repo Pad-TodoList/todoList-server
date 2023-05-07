@@ -7,6 +7,6 @@ import (
 )
 
 func LoginRoutes(router *mux.Router, dataAccess migrate.DataAccessObject) {
-	router.HandleFunc("/login", controllers.HandlerLogin(dataAccess)).Methods("POST")
-	router.HandleFunc("/register", controllers.HandlerLogin(dataAccess)).Methods("POST")
+	router.HandleFunc("/login", controllers.Login(dataAccess)).Methods("POST")
+	router.HandleFunc("/register", controllers.Register(dataAccess)).Methods("POST")
 }

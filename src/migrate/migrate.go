@@ -17,6 +17,9 @@ type DataAccessObject interface {
 	GetOneTask(id string) models.DataAccessMessage
 	GetUserTask(id string) models.DataAccessMessage
 	DeleteTask(id string) models.DataAccessMessage
+	CreateAccessToken(id string) models.DataAccessMessage
+	GetAccessToken(accessToken string) models.DataAccessMessage
+	DeleteAccessToken(id string) models.DataAccessMessage
 }
 
 func GetDataAccess() DataAccessObject {
@@ -26,7 +29,6 @@ func GetDataAccess() DataAccessObject {
 		User:         utils.GetGoDotEnvVariable("DATABASE_USER"),
 		Password:     utils.GetGoDotEnvVariable("DATABASE_PASSWORD"),
 		DatabaseName: utils.GetGoDotEnvVariable("DATABASE_NAME"),
-		Database:     nil,
 	}
 	return dataAccess
 }

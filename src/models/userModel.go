@@ -6,7 +6,7 @@ type UserToken struct {
 }
 
 type User struct {
-	Nickname  string `json:"name"`
+	Nickname  string `json:"nickname"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
@@ -15,5 +15,5 @@ type User struct {
 
 type IdentifiableUser struct {
 	User
-	Uuid string `json:"uuid"`
+	Id string `json:"id"`
 }

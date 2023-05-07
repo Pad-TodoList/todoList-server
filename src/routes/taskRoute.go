@@ -9,7 +9,7 @@ import (
 
 func TaskRoutes(router *mux.Router, dataAccess migrate.DataAccessObject) {
 	taskRouter := router.PathPrefix("/task").Subrouter()
-	taskRouter.Use(middleware.TaskMiddleware)
+	taskRouter.Use(middleware.TaskMiddleware(dataAccess))
 	taskRouter.HandleFunc("/create", controllers.HandlerTask(dataAccess)).Methods("POST")
 	taskRouter.HandleFunc("/update/{id}", controllers.HandlerTask(dataAccess)).Methods("PUT")
 	taskRouter.HandleFunc("/get/{id}", controllers.HandlerTask(dataAccess)).Methods("GET")

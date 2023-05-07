@@ -10,6 +10,6 @@ CREATE TABLE todolistUser (
 );
 DROP TABLE IF EXISTS user;
 CREATE TABLE userToken (
-    userId VARCHAR(100) NOT NULL,
+    userid VARCHAR(100) NOT NULL,
     token VARCHAR(100) NOT NULL
 );
