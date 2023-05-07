@@ -3,66 +3,30 @@ package migrate
 import (
 	"github.com/Pad-TodoList/todoList-server/src/migrate/postgreSql"
 	"github.com/Pad-TodoList/todoList-server/src/models"
+	"github.com/Pad-TodoList/todoList-server/src/utils"
 )
 
 type DataAccessObject interface {
-	connection() models.DataAccessMessage
-	createUser(user models.User) models.DataAccessMessage
-	updateUser(user models.IdentifiableUser) models.DataAccessMessage
-	getUser(id string) models.DataAccessMessage
-	deleteUser(id string) models.DataAccessMessage
-	createTask(task models.Task) models.DataAccessMessage
-	updateTask(task models.IdentifiableTask) models.DataAccessMessage
-	getOneTask(id string) models.DataAccessMessage
-	getUserTask(id string) models.DataAccessMessage
-	deleteTask(id string) models.DataAccessMessage
+	Connection() models.DataAccessMessage
+	CreateUser(user models.User) models.DataAccessMessage
+	UpdateUser(user models.IdentifiableUser) models.DataAccessMessage
+	GetUser(id string) models.DataAccessMessage
+	DeleteUser(id string) models.DataAccessMessage
+	CreateTask(task models.Task) models.DataAccessMessage
+	UpdateTask(task models.IdentifiableTask) models.DataAccessMessage
+	GetOneTask(id string) models.DataAccessMessage
+	GetUserTask(id string) models.DataAccessMessage
+	DeleteTask(id string) models.DataAccessMessage
 }
 
-type database struct {
-	host, port, user, password, databaseName string
-}
-
-func (p database) connection() models.DataAccessMessage {
-	return postgreSql.Connection()
-}
-
-func (p database) createUser(user models.User) models.DataAccessMessage {
-	return postgreSql.CreateUser(user)
-}
-
-func (p database) updateUser(user models.IdentifiableUser) models.DataAccessMessage {
-	return postgreSql.UpdateUser(user)
-}
-
-func (p database) getUser(id string) models.DataAccessMessage {
-	return postgreSql.GetUser(id)
-}
-
-func (p database) deleteUser(id string) models.DataAccessMessage {
-	return postgreSql.DeleteUser(id)
-}
-
-func (p database) createTask(task models.Task) models.DataAccessMessage {
-	return postgreSql.CreateTask(task)
-}
-
-func (p database) updateTask(task models.IdentifiableTask) models.DataAccessMessage {
-	return postgreSql.UpdateTask(task)
-}
-
-func (p database) getOneTask(id string) models.DataAccessMessage {
-	return postgreSql.GetOneTask(id)
-}
-
-func (p database) getUserTask(id string) models.DataAccessMessage {
-	return postgreSql.GetUserTask(id)
-}
-
-func (p database) deleteTask(id string) models.DataAccessMessage {
-	return postgreSql.DeleteTask(id)
-}
-
-func getDataAccess() DataAccessObject {
-	dataAccess := database{host: "", port: "", user: "", password: "", databaseName: ""}
+func GetDataAccess() DataAccessObject {
+	dataAccess := postgreSql.Database{
+		Host:         utils.GetGoDotEnvVariable("DATABASE_HOST"),
+		Port:         utils.GetGoDotEnvVariable("DATABASE_PORT"),
+		User:         utils.GetGoDotEnvVariable("DATABASE_USER"),
+		Password:     utils.GetGoDotEnvVariable("DATABASE_PASSWORD"),
+		DatabaseName: utils.GetGoDotEnvVariable("DATABASE_NAME"),
+		Database:     nil,
+	}
 	return dataAccess
 }
