@@ -7,5 +7,5 @@ CREATE TABLE task (
     startDate VARCHAR(100),
     endDate VARCHAR(100),
     status VARCHAR(10) NOT NULL,
-    userId int not null
+    userId VARCHAR(100) not null
 );

@@ -19,18 +19,7 @@ func Login(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		hashedPassword, err := utils.HashString(user.Password)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		result := dataAccess.CreateUser(models.User{
-			Nickname:  user.Nickname,
-			Firstname: user.Firstname,
-			Lastname:  user.Lastname,
-			Email:     user.Email,
-			Password:  hashedPassword,
-		})
+		result := dataAccess.FindUser(user)
 		if !result.Status {
 			fmt.Printf("error database : %s\n", result.Data)
 		}

@@ -11,5 +11,5 @@ type Task struct {
 
 type IdentifiableTask struct {
 	Task
-	Uuid string `json:"uuid"`
+	Id string `json:"id"`
 }

@@ -10,7 +10,7 @@ import (
 func UserRoutes(router *mux.Router, dataAccess migrate.DataAccessObject) {
 	userRouter := router.PathPrefix("/user").Subrouter()
 	userRouter.Use(middleware.UserMiddleware(dataAccess))
-	userRouter.HandleFunc("/update/{id}", controllers.HandlerUser(dataAccess)).Methods("PUT")
+	userRouter.HandleFunc("/update", controllers.UpdateUser(dataAccess)).Methods("PUT")
 	userRouter.HandleFunc("/get/{id}", controllers.GetUser(dataAccess)).Methods("GET")
-	userRouter.HandleFunc("/delete/{id}", controllers.HandlerUser(dataAccess)).Methods("DELETE")
+	userRouter.HandleFunc("/delete/{id}", controllers.DeleteUser(dataAccess)).Methods("DELETE")
 }

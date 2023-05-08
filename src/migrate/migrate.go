@@ -11,6 +11,7 @@ type DataAccessObject interface {
 	CreateUser(user models.User) models.DataAccessMessage
 	UpdateUser(user models.IdentifiableUser) models.DataAccessMessage
 	GetUser(id string) models.DataAccessMessage
+	FindUser(user models.User) models.DataAccessMessage
 	DeleteUser(id string) models.DataAccessMessage
 	CreateTask(task models.Task) models.DataAccessMessage
 	UpdateTask(task models.IdentifiableTask) models.DataAccessMessage

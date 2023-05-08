@@ -54,7 +54,7 @@ func (d Database) DeleteAccessToken(id string) models.DataAccessMessage {
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: err.Error()}
 	}
-	return models.DataAccessMessage{Status: true, Data: "OK"}
+	return models.DataAccessMessage{Status: true, Data: "Delete OK"}
 }
 
 func (d Database) Connection() models.DataAccessMessage {
@@ -69,7 +69,7 @@ func (d Database) Connection() models.DataAccessMessage {
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: err.Error()}
 	}
-	fmt.Println("Connected!")
+	fmt.Println("Connected to PostGreSQL !")
 	return models.DataAccessMessage{Status: true, Data: "Database connected"}
 }
 
@@ -97,7 +97,14 @@ func (d Database) CreateUser(user models.User) models.DataAccessMessage {
 }
 
 func (d Database) UpdateUser(user models.IdentifiableUser) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	updateData := `update "todolistuser" set "nickname"=$1, "firstname"=$2, "lastname"=$3, "email"=$4, "password"=$5 where "id"=$6`
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	_, err := db.Exec(updateData, user.Nickname, user.Firstname, user.Lastname, user.Email, user.Password, user.Id)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	return d.GetUser(user.Id)
 }
 
 func (d Database) GetUser(id string) models.DataAccessMessage {
@@ -130,12 +137,70 @@ func (d Database) GetUser(id string) models.DataAccessMessage {
 	}
 }
 
+func (d Database) FindUser(user models.User) models.DataAccessMessage {
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	rows, err := db.Query("SELECT id from todolistuser WHERE email = $1", user.Email)
+
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	defer rows.Close()
+	var id string
+	for rows.Next() {
+		err := rows.Scan(&id)
+		if err != nil {
+			return models.DataAccessMessage{Status: false, Data: err.Error()}
+		}
+	}
+	rows, err = db.Query("SELECT token from usertoken WHERE userid = $1", id)
+
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	defer rows.Close()
+	var token string
+	for rows.Next() {
+		err := rows.Scan(&token)
+		if err != nil {
+			return models.DataAccessMessage{Status: false, Data: err.Error()}
+		}
+	}
+	return models.DataAccessMessage{Status: false, Data: models.UserToken{UserId: id, AccessToken: token}}
+}
+
 func (d Database) DeleteUser(id string) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	deleteData := `delete from "todolistuser" where id=$1`
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	_, err := db.Exec(deleteData, id)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	return d.DeleteAccessToken(id)
 }
 
 func (d Database) CreateTask(task models.Task) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	var createdTask models.IdentifiableTask
+	insertData := `insert into "task"("name", "description", "startDate", "endDate", "status", "userId") values($1, $2, $3, $4, $5, $6)`
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	_, err := db.Exec(insertData, task.Name, task.Description, task.StartDate, task.EndDate, task.Status, task.UserId)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	rows, err := db.Query("SELECT id, name, description, startDate, endDate, status, userId from task WHERE name = $1", task.Name)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&createdTask)
+		if err != nil {
+			return models.DataAccessMessage{Status: false, Data: err.Error()}
+		}
+	}
+	return models.DataAccessMessage{Status: true, Data: createdTask}
 }
 
 func (d Database) UpdateTask(task models.IdentifiableTask) models.DataAccessMessage {
@@ -151,5 +216,12 @@ func (d Database) GetUserTask(id string) models.DataAccessMessage {
 }
 
 func (d Database) DeleteTask(id string) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	deleteData := `delete from "task" where id=$1`
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	_, err := db.Exec(deleteData, id)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	return models.DataAccessMessage{Status: true, Data: "Delete task OK"}
 }
