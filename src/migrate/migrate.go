@@ -7,11 +7,11 @@ import (
 )
 
 type DataAccessObject interface {
-	Connection() models.DataAccessMessage
+	CanConnectToDatabase() models.DataAccessMessage
 	CreateUser(user models.User) models.DataAccessMessage
 	UpdateUser(user models.IdentifiableUser) models.DataAccessMessage
 	GetUser(id string) models.DataAccessMessage
-	FindUser(user models.User) models.DataAccessMessage
+	FindUserToken(user models.User) models.DataAccessMessage
 	DeleteUser(id string) models.DataAccessMessage
 	CreateTask(task models.Task) models.DataAccessMessage
 	UpdateTask(task models.IdentifiableTask) models.DataAccessMessage
@@ -19,7 +19,7 @@ type DataAccessObject interface {
 	GetUserTask(id string) models.DataAccessMessage
 	DeleteTask(id string) models.DataAccessMessage
 	CreateAccessToken(id string) models.DataAccessMessage
-	GetAccessToken(accessToken string) models.DataAccessMessage
+	IsGoodAccessToken(accessToken string) models.DataAccessMessage
 	DeleteAccessToken(id string) models.DataAccessMessage
 }
 

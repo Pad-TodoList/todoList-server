@@ -13,7 +13,7 @@ import (
 
 func main() {
 	dataAccess := migrate.GetDataAccess()
-	output := dataAccess.Connection()
+	output := dataAccess.CanConnectToDatabase()
 	if !output.Status {
 		fmt.Printf("Error with database : %s\n", output.Data)
 	}

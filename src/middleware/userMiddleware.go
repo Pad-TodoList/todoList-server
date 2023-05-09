@@ -8,7 +8,7 @@ import (
 func UserMiddleware(dataAccess migrate.DataAccessObject) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			result := dataAccess.GetAccessToken(r.Header.Get("accessToken"))
+			result := dataAccess.IsGoodAccessToken(r.Header.Get("accessToken"))
 			if !result.Status {
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Pad-TodoList/todoList-server/src/migrate"
 	"github.com/Pad-TodoList/todoList-server/src/models"
 	"github.com/Pad-TodoList/todoList-server/src/utils"
@@ -19,19 +18,16 @@ func Login(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		result := dataAccess.FindUser(user)
-		if !result.Status {
-			fmt.Printf("error database : %s\n", result.Data)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		if !result.Status {
-			w.WriteHeader(http.StatusForbidden)
+		result := dataAccess.FindUserToken(user)
+		if result.Status {
+			utils.GoodResponse(w, http.StatusOK, result.Data)
 		} else {
-			w.WriteHeader(http.StatusOK)
-		}
-		err = json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			log.Fatalln("There was an error encoding the initialized struct")
+			_, ok := result.Data.(models.ErrorMessage)
+			if !ok {
+				log.Fatalln("Error with error message")
+			} else {
+				utils.BadResponse(w, result.Data.(models.ErrorMessage))
+			}
 		}
 	}
 }
@@ -57,18 +53,15 @@ func Register(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			Email:     user.Email,
 			Password:  hashedPassword,
 		})
-		if !result.Status {
-			fmt.Printf("error database : %s\n", result.Data)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		if !result.Status {
-			w.WriteHeader(http.StatusForbidden)
+		if result.Status {
+			utils.GoodResponse(w, http.StatusOK, result.Data)
 		} else {
-			w.WriteHeader(http.StatusCreated)
-		}
-		err = json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			log.Fatalln("There was an error encoding the initialized struct")
+			_, ok := result.Data.(models.ErrorMessage)
+			if !ok {
+				log.Fatalln("Error with error message")
+			} else {
+				utils.BadResponse(w, result.Data.(models.ErrorMessage))
+			}
 		}
 	}
 }
