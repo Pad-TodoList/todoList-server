@@ -182,7 +182,7 @@ func (d Database) DeleteUser(id string) models.DataAccessMessage {
 
 func (d Database) CreateTask(task models.Task) models.DataAccessMessage {
 	var createdTask models.IdentifiableTask
-	insertData := `insert into "task"("name", "description", "startDate", "endDate", "status", "userId") values($1, $2, $3, $4, $5, $6)`
+	insertData := `insert into "task"("name", "description", "startdate", "enddate", "status", "userid") values($1, $2, $3, $4, $5, $6)`
 	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
 	db, _ := sql.Open("postgres", psqlConn)
 	_, err := db.Exec(insertData, task.Name, task.Description, task.StartDate, task.EndDate, task.Status, task.UserId)
@@ -195,7 +195,7 @@ func (d Database) CreateTask(task models.Task) models.DataAccessMessage {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		err := rows.Scan(&createdTask)
+		err := rows.Scan(&createdTask.Id, &createdTask.Name, &createdTask.Description, &createdTask.StartDate, &createdTask.EndDate, &createdTask.Status, &createdTask.UserId)
 		if err != nil {
 			return models.DataAccessMessage{Status: false, Data: err.Error()}
 		}
@@ -204,15 +204,64 @@ func (d Database) CreateTask(task models.Task) models.DataAccessMessage {
 }
 
 func (d Database) UpdateTask(task models.IdentifiableTask) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	updateData := `update "task" set "name"=$1, "description"=$2, "startdate"=$3, "enddate"=$4, "status"=$5, "userid"=$6 where "id"=$7`
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	_, err := db.Exec(updateData, task.Name, task.Description, task.StartDate, task.EndDate, task.Status, task.UserId, task.Id)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	return d.GetOneTask(task.Id)
 }
 
 func (d Database) GetOneTask(id string) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	var task models.IdentifiableTask
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	rows, err := db.Query("SELECT id, name, description, startDate, endDate, status, userId from task WHERE id = $1", id)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	defer rows.Close()
+	total := 0
+	for rows.Next() {
+		total++
+		err := rows.Scan(&task.Id, &task.Name, &task.Description, &task.StartDate, &task.EndDate, &task.Status, &task.UserId)
+		if err != nil {
+			return models.DataAccessMessage{Status: false, Data: err.Error()}
+		}
+	}
+	if total == 0 {
+		return models.DataAccessMessage{Status: false, Data: "Not found"}
+	} else {
+		return models.DataAccessMessage{Status: true, Data: task}
+	}
 }
 
 func (d Database) GetUserTask(id string) models.DataAccessMessage {
-	return models.DataAccessMessage{Status: true, Data: "1"}
+	var tasks []models.IdentifiableTask
+	psqlConn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", d.Host, d.Port, d.User, d.Password, d.DatabaseName)
+	db, _ := sql.Open("postgres", psqlConn)
+	rows, err := db.Query("SELECT id, name, description, startDate, endDate, status, userId from task WHERE userId = $1", id)
+	if err != nil {
+		return models.DataAccessMessage{Status: false, Data: err.Error()}
+	}
+	defer rows.Close()
+	total := 0
+	for rows.Next() {
+		total++
+		var task models.IdentifiableTask
+		err := rows.Scan(&task.Id, &task.Name, &task.Description, &task.StartDate, &task.EndDate, &task.Status, &task.UserId)
+		tasks = append(tasks, task)
+		if err != nil {
+			return models.DataAccessMessage{Status: false, Data: err.Error()}
+		}
+	}
+	if total == 0 {
+		return models.DataAccessMessage{Status: false, Data: "Not found"}
+	} else {
+		return models.DataAccessMessage{Status: true, Data: tasks}
+	}
 }
 
 func (d Database) DeleteTask(id string) models.DataAccessMessage {

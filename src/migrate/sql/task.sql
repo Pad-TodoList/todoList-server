@@ -1,7 +1,5 @@
-USE todolist;
-DROP TABLE IF EXISTS task;
 CREATE TABLE task (
-    id int primary key NOT NULL UNIQUE,
+    id SERIAL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(100),
     startDate VARCHAR(100),
