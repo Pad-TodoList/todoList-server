@@ -27,7 +27,7 @@ func CreateTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 		if !result.Status {
 			w.WriteHeader(http.StatusForbidden)
 		} else {
-			w.WriteHeader(http.StatusForbidden)
+			w.WriteHeader(http.StatusCreated)
 		}
 		err = json.NewEncoder(w).Encode(result.Data)
 		if err != nil {
@@ -53,7 +53,7 @@ func UpdateTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 		if !result.Status {
 			w.WriteHeader(http.StatusForbidden)
 		} else {
-			w.WriteHeader(http.StatusForbidden)
+			w.WriteHeader(http.StatusNoContent)
 		}
 		err = json.NewEncoder(w).Encode(result.Data)
 		if err != nil {
