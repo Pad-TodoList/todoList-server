@@ -33,3 +33,16 @@ func BadResponse(w http.ResponseWriter, error models.ErrorMessage) {
 		log.Fatalln("There was an error encoding the initialized struct")
 	}
 }
+
+func HandleResponse(goodStatusCode int, result models.DataAccessMessage, w http.ResponseWriter) {
+	if result.Status {
+		GoodResponse(w, goodStatusCode, result.Data)
+	} else {
+		_, ok := result.Data.(models.ErrorMessage)
+		if !ok {
+			log.Fatalln("Error with error message")
+		} else {
+			BadResponse(w, result.Data.(models.ErrorMessage))
+		}
+	}
+}

@@ -2,11 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Pad-TodoList/todoList-server/src/migrate"
 	"github.com/Pad-TodoList/todoList-server/src/models"
+	"github.com/Pad-TodoList/todoList-server/src/utils"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 )
 
@@ -20,19 +19,8 @@ func CreateTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			return
 		}
 		result := dataAccess.CreateTask(task)
-		if !result.Status {
-			fmt.Printf("error database : %s\n", result.Data)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		if !result.Status {
-			w.WriteHeader(http.StatusForbidden)
-		} else {
-			w.WriteHeader(http.StatusCreated)
-		}
-		err = json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			log.Fatalln("There was an error encoding the initialized struct")
-		}
+
+		utils.HandleResponse(http.StatusCreated, result, w)
 	}
 }
 
@@ -46,19 +34,8 @@ func UpdateTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			return
 		}
 		result := dataAccess.UpdateTask(task)
-		if !result.Status {
-			fmt.Printf("error database : %s\n", result.Data)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		if !result.Status {
-			w.WriteHeader(http.StatusForbidden)
-		} else {
-			w.WriteHeader(http.StatusNoContent)
-		}
-		err = json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			log.Fatalln("There was an error encoding the initialized struct")
-		}
+
+		utils.HandleResponse(http.StatusNoContent, result, w)
 	}
 }
 
@@ -68,16 +45,7 @@ func DeleteTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 		id := vars["id"]
 		result := dataAccess.DeleteTask(id)
 
-		w.Header().Set("Content-Type", "application/json")
-		if result.Status {
-			w.WriteHeader(http.StatusOK)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-		}
-		err := json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+		utils.HandleResponse(http.StatusOK, result, w)
 	}
 }
 
@@ -87,16 +55,7 @@ func GetOneTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 		id := vars["id"]
 		result := dataAccess.GetOneTask(id)
 
-		w.Header().Set("Content-Type", "application/json")
-		if result.Status {
-			w.WriteHeader(http.StatusOK)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-		}
-		err := json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+		utils.HandleResponse(http.StatusOK, result, w)
 	}
 }
 
@@ -106,15 +65,6 @@ func GetUserTask(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 		id := vars["id"]
 		result := dataAccess.GetUserTask(id)
 
-		w.Header().Set("Content-Type", "application/json")
-		if result.Status {
-			w.WriteHeader(http.StatusOK)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-		}
-		err := json.NewEncoder(w).Encode(result.Data)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+		utils.HandleResponse(http.StatusOK, result, w)
 	}
 }

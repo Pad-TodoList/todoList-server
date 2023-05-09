@@ -199,7 +199,7 @@ func (d Database) CreateTask(task models.Task) models.DataAccessMessage {
 	insertData := `insert into "task"("name", "description", "startdate", "enddate", "status", "userid") values($1, $2, $3, $4, $5, $6)`
 	db := connectToDatabase(d)
 	if db == nil {
-		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.ConnectionDatabase, Message: "Error connection DB"}}
+		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.Forbidden, Message: "Error connection DB"}}
 	}
 	_, err := db.Exec(insertData, task.Name, task.Description, task.StartDate, task.EndDate, task.Status, task.UserId)
 	if err != nil {

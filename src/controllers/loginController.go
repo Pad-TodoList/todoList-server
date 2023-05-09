@@ -5,7 +5,6 @@ import (
 	"github.com/Pad-TodoList/todoList-server/src/migrate"
 	"github.com/Pad-TodoList/todoList-server/src/models"
 	"github.com/Pad-TodoList/todoList-server/src/utils"
-	"log"
 	"net/http"
 )
 
@@ -20,15 +19,15 @@ func Login(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 		}
 		result := dataAccess.FindUserToken(user)
 		if result.Status {
-			utils.GoodResponse(w, http.StatusOK, result.Data)
-		} else {
-			_, ok := result.Data.(models.ErrorMessage)
-			if !ok {
-				log.Fatalln("Error with error message")
-			} else {
-				utils.BadResponse(w, result.Data.(models.ErrorMessage))
+			userSave := dataAccess.GetUser(result.Data.(models.UserToken).UserId)
+			hashedPassword := utils.HashString(user.Password)
+			if hashedPassword != userSave.Data.(models.IdentifiableUser).Password {
+				utils.BadResponse(w, models.ErrorMessage{Code: models.Forbidden, Message: "Bad password"})
+				return
 			}
 		}
+
+		utils.HandleResponse(http.StatusOK, result, w)
 	}
 }
 
@@ -41,11 +40,7 @@ func Register(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		hashedPassword, err := utils.HashString(user.Password)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+		hashedPassword := utils.HashString(user.Password)
 		result := dataAccess.CreateUser(models.User{
 			Nickname:  user.Nickname,
 			Firstname: user.Firstname,
@@ -53,15 +48,7 @@ func Register(dataAccess migrate.DataAccessObject) http.HandlerFunc {
 			Email:     user.Email,
 			Password:  hashedPassword,
 		})
-		if result.Status {
-			utils.GoodResponse(w, http.StatusOK, result.Data)
-		} else {
-			_, ok := result.Data.(models.ErrorMessage)
-			if !ok {
-				log.Fatalln("Error with error message")
-			} else {
-				utils.BadResponse(w, result.Data.(models.ErrorMessage))
-			}
-		}
+
+		utils.HandleResponse(http.StatusCreated, result, w)
 	}
 }
