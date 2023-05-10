@@ -1,1 +1,0 @@
-Fichier pour créer la base de données et connecter le serveur à la BDD

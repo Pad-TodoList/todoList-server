@@ -8,15 +8,39 @@
 	"item": [
 		{
 			"name": "update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "138cdd88-72e8-4a1c-9e9a-d6e57e9b98cb",
+						"exec": [
+							"pm.test(\"Test status code /user/update\", function() {",
+							"    pm.response.to.have.status(404);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "79fe37a8-c5ab-4fb8-a013-c80681fabdbc",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "accessToken",
+						"value": "da576c85de57de91600aaf2c2c8adf316424280a5d586b8f34ec84d176620052ba6d1c2bc9cf8c68806900a1edb3864b372f",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"20\",\n    \"nickname\": \"update nickname\",\n    \"firstname\": \"update firstname\",\n    \"lastname\": \"update lastname\",\n    \"email\": \"update email\",\n    \"password\": \"update password\"\n}"
+				},
 				"url": {
-					"raw": "http://localhost:8080/user/update/:id",
+					"raw": "http://localhost:8080/user/update",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -24,14 +48,7 @@
 					"port": "8080",
 					"path": [
 						"user",
-						"update",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": null
-						}
+						"update"
 					]
 				}
 			},
@@ -39,15 +56,35 @@
 		},
 		{
 			"name": "delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "85a68ab4-9756-420b-9e2c-7998e75389d0",
+						"exec": [
+							"pm.test(\"Test status code /user/delete/{id}\", function() {",
+							"    pm.response.to.have.status(401);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "1a5c1845-2328-4561-9680-467d960ee147",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "accessToken",
+						"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/user/delete/:id",
+					"raw": "http://localhost:8080/user/delete/6",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -56,13 +93,7 @@
 					"path": [
 						"user",
 						"delete",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": null
-						}
+						"6"
 					]
 				}
 			},
@@ -70,15 +101,39 @@
 		},
 		{
 			"name": "get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "07fae617-9386-4480-8b4a-2553dab20b53",
+						"exec": [
+							"pm.test(\"Test status code /user/get/{id}\", function() {",
+							"    pm.response.to.have.status(401);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "0a8c56c1-2c2d-470f-a51a-a6b3b02e501a",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "accessToken",
+						"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "http://localhost:8080/user/get/:id",
+					"raw": "http://localhost:8080/user/get/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -87,13 +142,7 @@
 					"path": [
 						"user",
 						"get",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": null
-						}
+						"1"
 					]
 				}
 			},
@@ -138,6 +187,20 @@
 		},
 		{
 			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74b6bd5d-5710-4a0f-a27b-4aef7d703d32",
+						"exec": [
+							"pm.test(\"Test status code /register\", function() {",
+							"    pm.response.to.have.status(400);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "ed92231d-3ef3-426a-8686-bdd0d249b9dd",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -145,6 +208,10 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nickname\": \"Pad\",\n    \"firstname\": \"Pierre-Alexandre\",\n    \"lastname\": \"Delgado\",\n    \"email\": \"delgadopierrealexandre@gmail.com\",\n    \"password\": \"123456\"\n}"
+				},
 				"url": {
 					"raw": "http://localhost:8080/register",
 					"protocol": "http",
@@ -161,6 +228,20 @@
 		},
 		{
 			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "80d096b6-c276-46b9-8f65-1f8b483dccb2",
+						"exec": [
+							"pm.test(\"Test status code /login\", function() {",
+							"    pm.response.to.have.status(400);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "57143246-2256-4970-8e34-d127ec44e581",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -168,6 +249,10 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nickname\": \"Pad\",\n    \"firstname\": \"Pierre-Alexandre\",\n    \"lastname\": \"Delgado\",\n    \"email\": \"delgadopierrealexandre@gmail.com\",\n    \"password\": \"123456\"\n}"
+				},
 				"url": {
 					"raw": "http://localhost:8080/login",
 					"protocol": "http",
@@ -184,13 +269,37 @@
 		},
 		{
 			"name": "create task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "91b51329-1d86-47d6-acc4-ee68bef1bde3",
+						"exec": [
+							"pm.test(\"Test status code /task/create\", function() {",
+							"    pm.response.to.have.status(401);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "a1e17445-6c7f-4339-b1ae-bc7f6e0c0f86",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "accessToken",
+						"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"task\",\n    \"description\": \"task\",\n    \"startDate\": \"task\",\n    \"endDate\": \"task\",\n    \"status\": \"task\",\n    \"userId\": \"1\"\n}"
+				},
 				"url": {
 					"raw": "http://localhost:8080/task/create",
 					"protocol": "http",
@@ -208,6 +317,20 @@
 		},
 		{
 			"name": "update task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a23a055-28f9-47f4-bd15-6185a5aff158",
+						"exec": [
+							"pm.test(\"Test status code /task/update\", function() {",
+							"    pm.response.to.have.status(404);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "c4d429b2-1c30-45de-aea3-fa684f6430e6",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -215,8 +338,12 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"update task\",\n    \"description\": \"task\",\n    \"startDate\": \"task\",\n    \"endDate\": \"task\",\n    \"status\": \"task\",\n    \"userId\": \"1\",\n    \"id\": \"2\"\n}"
+				},
 				"url": {
-					"raw": "http://localhost:8080/task/update/1",
+					"raw": "http://localhost:8080/task/update",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -224,8 +351,7 @@
 					"port": "8080",
 					"path": [
 						"task",
-						"update",
-						"1"
+						"update"
 					]
 				}
 			},
@@ -233,15 +359,35 @@
 		},
 		{
 			"name": "get one task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d6f73fc7-80f4-45cb-8f9f-ebaa70f6e5ec",
+						"exec": [
+							"pm.test(\"Test status code /task/get/{id}\", function() {",
+							"    pm.response.to.have.status(401);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "fa95a3ef-59ec-4d1e-89e8-99acc4146290",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "accessToken",
+						"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/task/get/:id",
+					"raw": "http://localhost:8080/task/get/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -250,12 +396,14 @@
 					"path": [
 						"task",
 						"get",
-						":id"
+						"1"
 					],
-					"variable": [
+					"query": [
 						{
-							"key": "id",
-							"value": null
+							"key": "accessToken",
+							"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+							"type": "text",
+							"disabled": true
 						}
 					]
 				}
@@ -264,6 +412,20 @@
 		},
 		{
 			"name": "get all user tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0d09bda1-7125-41e5-9ab5-8f8e96d3df36",
+						"exec": [
+							"pm.test(\"Test status code /task/getUser/{id}\", function() {",
+							"    pm.response.to.have.status(401);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "9d8100f4-6549-4cb7-b208-adb319952cb1",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -272,7 +434,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/task/getUser/:id",
+					"raw": "http://localhost:8080/task/getUser/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -281,13 +443,7 @@
 					"path": [
 						"task",
 						"getUser",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": null
-						}
+						"1"
 					]
 				}
 			},
@@ -295,6 +451,20 @@
 		},
 		{
 			"name": "delete task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0301088c-7b0f-483b-bbbd-95b3a0772ec5",
+						"exec": [
+							"pm.test(\"Test status code /task/delete/{id}\", function() {",
+							"    pm.response.to.have.status(401);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "f6b92a5c-7c18-4bd3-ae78-ad1fd56db3b1",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -303,7 +473,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/task/delete/:id",
+					"raw": "http://localhost:8080/task/delete/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -312,13 +482,45 @@
 					"path": [
 						"task",
 						"delete",
-						":id"
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test render api health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "147b9344-2d38-4544-aeba-5f985cd033d2",
+						"exec": [
+							"pm.test(\"Test status code /about.json\", function() {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "3e4587a6-959f-42bc-978c-c1647c166f98",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://todolist-fullstack.onrender.com/about.json",
+					"protocol": "https",
+					"host": [
+						"todolist-fullstack",
+						"onrender",
+						"com"
 					],
-					"variable": [
-						{
-							"key": "id",
-							"value": null
-						}
+					"path": [
+						"about.json"
 					]
 				}
 			},

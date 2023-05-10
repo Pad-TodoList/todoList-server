@@ -1,16 +1,19 @@
 package middleware
 
 import (
-	"fmt"
+	"github.com/Pad-TodoList/todoList-server/src/migrate"
 	"net/http"
 )
 
-func UserMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		//if r.URL.Path == "/about.json" {
-		//	fmt.Println("Request received for /about.json")
-		//}
-		fmt.Println(r.URL.Path, "user middleware")
-		next.ServeHTTP(w, r)
-	})
+func UserMiddleware(dataAccess migrate.DataAccessObject) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			result := dataAccess.IsGoodAccessToken(r.Header.Get("accessToken"))
+			if !result.Status {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
 }

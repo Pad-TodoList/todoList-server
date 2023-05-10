@@ -1,14 +1,12 @@
 package models
 
-import "github.com/google/uuid"
-
 type UserToken struct {
 	UserId      string `json:"userId"`
-	AccessToken string `json:"acessToken"`
+	AccessToken string `json:"accessToken"`
 }
 
 type User struct {
-	Nickname  string `json:"name"`
+	Nickname  string `json:"nickname"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
@@ -17,5 +15,5 @@ type User struct {
 
 type IdentifiableUser struct {
 	User
-	UUID uuid.UUID `json:"uuid"`
+	Id string `json:"id"`
 }
