@@ -2,7 +2,7 @@
 
 ![example workflow](https://github.com/Pad-TodoList/todoList-server/actions/workflows/server.yml/badge.svg?event=push)
 
-Server using [go](https://go.dev/)
+Server using [go 1.20](https://go.dev/)
 
 ## Server information
 
