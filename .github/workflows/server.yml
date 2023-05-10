@@ -1,4 +1,5 @@
-run-name: Dev workflow - Build, Test and Deploy
+run-name: Dev workflow - Build and Test
+name: CI/CD
 
 on:
   pull_request:
@@ -24,6 +25,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
+    needs: [build]
     environment: testing
     name: Run Postman tests
     steps:
@@ -42,16 +44,4 @@ jobs:
             echo "${{ secrets.ENV_FILE }}" > .env
       - name: Run API tests
         run: |
-          go run src/main.go & postman collection run "${{ github.workspace }}/postman/collections/todoList.json" -e "15037258-1633bb9d-e860-457d-b2dc-57aa7d6aba65" --integration-id "139819-${{ github.run_id }}"
-
-  deploy:
-    name: Deploy server
-    needs: [build, tests]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Deploy
-        run: echo "this script will deploy the server 🚀"
+          go run src/main.go & sleep 10 && postman collection run "${{ github.workspace }}/postman/collections/todoList.json" -e "15037258-1633bb9d-e860-457d-b2dc-57aa7d6aba65" --integration-id "139819-${{ github.run_id }}"
