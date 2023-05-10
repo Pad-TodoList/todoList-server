@@ -2,9 +2,6 @@ run-name: Dev workflow - Build, Test and Deploy
 name: CI/CD
 
 on:
-  push:
-    branches:
-      - fix/github-action
   pull_request:
     branches:
       - develop
