@@ -1,6 +1,9 @@
 run-name: Dev workflow - Build, Test and Deploy
 
 on:
+  push:
+    branches:
+      - fix/github-action
   pull_request:
     branches:
       - develop
@@ -42,7 +45,7 @@ jobs:
             echo "${{ secrets.ENV_FILE }}" > .env
       - name: Run API tests
         run: |
-          go run src/main.go & postman collection run "${{ github.workspace }}/postman/collections/todoList.json" -e "15037258-1633bb9d-e860-457d-b2dc-57aa7d6aba65" --integration-id "139819-${{ github.run_id }}"
+          go run src/main.go & wait 10 postman collection run "${{ github.workspace }}/postman/collections/todoList.json" -e "15037258-1633bb9d-e860-457d-b2dc-57aa7d6aba65" --integration-id "139819-${{ github.run_id }}"
 
   deploy:
     name: Deploy server
