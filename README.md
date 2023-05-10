@@ -1,6 +1,6 @@
 # todoList-server
 
-![example workflow](https://github.com/Pad-TodoList/todoList-server/actions/workflows/server.yml/badge.svg)
+![example workflow](https://github.com/Pad-TodoList/todoList-server/actions/workflows/server.yml/badge.svg?event=push)
 
 Server using [go](https://go.dev/)
 
