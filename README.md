@@ -1,6 +1,6 @@
 # todoList-server
 
-![example workflow](https://github.com/Pad-TodoList/todoList-server/actions/workflows/server.yml/badge.svg?event=push)
+![example workflow](https://github.com/Pad-TodoList/todoList-server/actions/workflows/server.yml/badge.svg)
 
 Server using [go 1.20](https://go.dev/)
 
@@ -9,6 +9,10 @@ Server using [go 1.20](https://go.dev/)
 Server deploy using [render](https://render.com/)
 
 URL https://todolist-fullstack.onrender.com
+
+You can find the client here :
+
+URL https://pad-todolist.netlify.app/
 
 ```/about.json```to get all available routes
 
