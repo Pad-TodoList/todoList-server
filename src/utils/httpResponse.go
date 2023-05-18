@@ -9,6 +9,7 @@ import (
 
 func GoodResponse(w http.ResponseWriter, code int, data any) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(code)
 	err := json.NewEncoder(w).Encode(data)
 	if err != nil {
@@ -18,6 +19,7 @@ func GoodResponse(w http.ResponseWriter, code int, data any) {
 
 func BadResponse(w http.ResponseWriter, error models.ErrorMessage) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	switch error.Code {
 	case models.NotFound:
 		w.WriteHeader(http.StatusNotFound)
