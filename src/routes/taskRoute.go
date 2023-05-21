@@ -4,6 +4,7 @@ import (
 	"github.com/Pad-TodoList/todoList-server/src/controllers"
 	"github.com/Pad-TodoList/todoList-server/src/middleware"
 	"github.com/Pad-TodoList/todoList-server/src/migrate"
+	"github.com/Pad-TodoList/todoList-server/src/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -15,4 +16,9 @@ func TaskRoutes(router *mux.Router, dataAccess migrate.DataAccessObject) {
 	taskRouter.HandleFunc("/get/{id}", controllers.GetOneTask(dataAccess)).Methods("GET")
 	taskRouter.HandleFunc("/getUser/{id}", controllers.GetUserTask(dataAccess)).Methods("GET")
 	taskRouter.HandleFunc("/delete/{id}", controllers.DeleteTask(dataAccess)).Methods("DELETE")
+	taskRouter.HandleFunc("/create", utils.HandleOptions).Methods("OPTIONS")
+	taskRouter.HandleFunc("/update", utils.HandleOptions).Methods("OPTIONS")
+	taskRouter.HandleFunc("/get/{id}", utils.HandleOptions).Methods("OPTIONS")
+	taskRouter.HandleFunc("/getUser/{id}", utils.HandleOptions).Methods("OPTIONS")
+	taskRouter.HandleFunc("/delete/{id}", utils.HandleOptions).Methods("OPTIONS")
 }
