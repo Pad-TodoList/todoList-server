@@ -5,7 +5,7 @@ import "net/http"
 func HandleOptions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, accessToken")
 
 	// Optionally, you can set additional headers such as 'Access-Control-Max-Age' for caching
 
