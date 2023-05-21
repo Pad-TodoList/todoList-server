@@ -11,8 +11,8 @@ import (
 func Router(dataAccess migrate.DataAccessObject) http.Handler {
 	r := mux.NewRouter()
 	r.HandleFunc("/about.json", controllers.HandlerAbout(dataAccess)).Methods("GET")
-	LoginRoutes(r, dataAccess)
 	UserRoutes(r, dataAccess)
 	TaskRoutes(r, dataAccess)
+	LoginRoutes(r, dataAccess)
 	return r
 }
