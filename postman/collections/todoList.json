@@ -40,15 +40,14 @@
 					"raw": "{\n    \"id\": \"20\",\n    \"nickname\": \"update nickname\",\n    \"firstname\": \"update firstname\",\n    \"lastname\": \"update lastname\",\n    \"email\": \"update email\",\n    \"password\": \"update password\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/user/update",
+					"raw": "http://localhost:8080/updateUser",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"user",
-						"update"
+						"updateUser"
 					]
 				}
 			},
@@ -84,15 +83,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/user/delete/6",
+					"raw": "http://localhost:8080/deleteUser/6",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"user",
-						"delete",
+						"deleteUser",
 						"6"
 					]
 				}
@@ -124,7 +122,7 @@
 				"header": [
 					{
 						"key": "accessToken",
-						"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+						"value": "9181792d0369fd7f4862c0f1088054e1ebafaf2cc1ac63561377f7a43ce749f59cd853dcb9ff1ec49fb0b873383fa9e33cf1",
 						"type": "text"
 					}
 				],
@@ -133,16 +131,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/user/get/1",
+					"raw": "http://localhost:8080/getUser/6",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"user",
-						"get",
-						"1"
+						"getUser",
+						"6"
 					]
 				}
 			},
@@ -213,12 +210,13 @@
 					"raw": "{\n    \"nickname\": \"Pad\",\n    \"firstname\": \"Pierre-Alexandre\",\n    \"lastname\": \"Delgado\",\n    \"email\": \"delgadopierrealexandre@gmail.com\",\n    \"password\": \"123456\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/register",
-					"protocol": "http",
+					"raw": "https://todolist-fullstack.onrender.com/register",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"todolist-fullstack",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"register"
 					]
@@ -301,15 +299,14 @@
 					"raw": "{\n    \"name\": \"task\",\n    \"description\": \"task\",\n    \"startDate\": \"task\",\n    \"endDate\": \"task\",\n    \"status\": \"task\",\n    \"userId\": \"1\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/task/create",
+					"raw": "http://localhost:8080/createTask",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"task",
-						"create"
+						"createTask"
 					]
 				}
 			},
@@ -343,15 +340,14 @@
 					"raw": "{\n    \"name\": \"update task\",\n    \"description\": \"task\",\n    \"startDate\": \"task\",\n    \"endDate\": \"task\",\n    \"status\": \"task\",\n    \"userId\": \"1\",\n    \"id\": \"2\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/task/update",
+					"raw": "http://localhost:8080/updateTask",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"task",
-						"update"
+						"updateTask"
 					]
 				}
 			},
@@ -387,15 +383,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/task/get/1",
+					"raw": "http://localhost:8080/getTask/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"task",
-						"get",
+						"getTask",
 						"1"
 					],
 					"query": [
@@ -434,15 +429,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/task/getUser/1",
+					"raw": "http://localhost:8080/getUserTasks/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"task",
-						"getUser",
+						"getUserTasks",
 						"1"
 					]
 				}
@@ -473,15 +467,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/task/delete/1",
+					"raw": "http://localhost:8080/deleteTask/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"task",
-						"delete",
+						"deleteTask",
 						"1"
 					]
 				}
