@@ -12,7 +12,7 @@ import (
 func HandlerAbout(_ migrate.DataAccessObject) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(http.StatusOK)
 		routes := []models.RouteInfo{
 			{Name: "about.json", Status: models.RouteStatus{Path: "/about.json", Status: "OK"}},
