@@ -19,7 +19,7 @@ func (d Database) CreateAccessToken(id string) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.ConnectionDatabase, Message: "Error connection DB"}}
 	}
 	_, err := db.Exec(insertData, id, token)
-
+	defer db.Close()
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
@@ -38,6 +38,7 @@ func (d Database) IsGoodAccessToken(accessToken string) models.DataAccessMessage
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
+	defer db.Close()
 	for rows.Next() {
 		length++
 	}
@@ -55,7 +56,7 @@ func (d Database) DeleteAccessToken(id string) models.DataAccessMessage {
 	}
 	removeData := "delete from usertoken where userid = $1"
 	_, err := db.Exec(removeData, id)
-
+	defer db.Close()
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
@@ -65,7 +66,7 @@ func (d Database) DeleteAccessToken(id string) models.DataAccessMessage {
 func connectToDatabase(d Database) *sql.DB {
 	psqlConn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", d.User, d.Password, d.Host, d.Port, d.DatabaseName)
 	db, err := sql.Open("postgres", psqlConn)
-
+	defer db.Close()
 	if err != nil {
 		return nil
 	}
@@ -96,6 +97,7 @@ func (d Database) CreateUser(user models.User) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
+	defer db.Close()
 	for rows.Next() {
 		err := rows.Scan(&id)
 		if err != nil {
@@ -112,6 +114,7 @@ func (d Database) UpdateUser(user models.IdentifiableUser) models.DataAccessMess
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.ConnectionDatabase, Message: "Error connection DB"}}
 	}
 	_, err := db.Exec(updateData, user.Nickname, user.Firstname, user.Lastname, user.Email, user.Password, user.Id)
+	defer db.Close()
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
@@ -130,6 +133,7 @@ func (d Database) GetUser(id string) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
+	defer db.Close()
 	for rows.Next() {
 		err := rows.Scan(&user.Id, &user.Nickname, &user.Firstname, &user.Lastname, &user.Email, &user.Password)
 		if err != nil {
@@ -167,6 +171,7 @@ func (d Database) FindUserToken(user models.User) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
+	defer db.Close()
 	var token string
 	for rows.Next() {
 		err := rows.Scan(&token)
@@ -187,7 +192,7 @@ func (d Database) DeleteUser(id string) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.ConnectionDatabase, Message: "Error connection DB"}}
 	}
 	_, err := db.Exec(deleteData, id)
-
+	defer db.Close()
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
@@ -211,6 +216,7 @@ func (d Database) CreateTask(task models.Task) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
+	defer db.Close()
 	for rows.Next() {
 		err := rows.Scan(&createdTask.Id, &createdTask.Name, &createdTask.Description, &createdTask.StartDate, &createdTask.EndDate, &createdTask.Status, &createdTask.UserId)
 		if err != nil {
@@ -227,7 +233,7 @@ func (d Database) UpdateTask(task models.IdentifiableTask) models.DataAccessMess
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.ConnectionDatabase, Message: "Error connection DB"}}
 	}
 	_, err := db.Exec(updateData, task.Name, task.Description, task.StartDate, task.EndDate, task.Status, task.UserId, task.Id)
-
+	defer db.Close()
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
@@ -247,6 +253,7 @@ func (d Database) GetOneTask(id string) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
+	defer db.Close()
 	for rows.Next() {
 		total++
 		err := rows.Scan(&task.Id, &task.Name, &task.Description, &task.StartDate, &task.EndDate, &task.Status, &task.UserId)
@@ -273,7 +280,7 @@ func (d Database) GetUserTask(id string) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}
 	defer rows.Close()
-
+	defer db.Close()
 	for rows.Next() {
 		var task models.IdentifiableTask
 		err := rows.Scan(&task.Id, &task.Name, &task.Description, &task.StartDate, &task.EndDate, &task.Status, &task.UserId)
@@ -292,7 +299,7 @@ func (d Database) DeleteTask(id string) models.DataAccessMessage {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.ConnectionDatabase, Message: "Error connection DB"}}
 	}
 	_, err := db.Exec(deleteData, id)
-
+	defer db.Close()
 	if err != nil {
 		return models.DataAccessMessage{Status: false, Data: models.ErrorMessage{Code: models.DatabaseAction, Message: err.Error()}}
 	}

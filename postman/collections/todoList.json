@@ -15,7 +15,7 @@
 						"id": "138cdd88-72e8-4a1c-9e9a-d6e57e9b98cb",
 						"exec": [
 							"pm.test(\"Test status code /user/update\", function() {",
-							"    pm.response.to.have.status(404);",
+							"    pm.response.to.have.status(401);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -124,7 +124,7 @@
 				"header": [
 					{
 						"key": "accessToken",
-						"value": "25c412387c6118bd8a609db372d678e4f85030d1d28fbf0b850bf5e65be2bf425ab148b2fd4fd9207fdfe14b8634b95b508c",
+						"value": "9181792d0369fd7f4862c0f1088054e1ebafaf2cc1ac63561377f7a43ce749f59cd853dcb9ff1ec49fb0b873383fa9e33cf1",
 						"type": "text"
 					}
 				],
@@ -133,7 +133,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/user/get/1",
+					"raw": "http://localhost:8080/user/get/6",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -142,7 +142,7 @@
 					"path": [
 						"user",
 						"get",
-						"1"
+						"6"
 					]
 				}
 			},
@@ -194,7 +194,7 @@
 						"id": "74b6bd5d-5710-4a0f-a27b-4aef7d703d32",
 						"exec": [
 							"pm.test(\"Test status code /register\", function() {",
-							"    pm.response.to.have.status(400);",
+							"    pm.response.to.have.status(403);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -213,12 +213,13 @@
 					"raw": "{\n    \"nickname\": \"Pad\",\n    \"firstname\": \"Pierre-Alexandre\",\n    \"lastname\": \"Delgado\",\n    \"email\": \"delgadopierrealexandre@gmail.com\",\n    \"password\": \"123456\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/register",
-					"protocol": "http",
+					"raw": "https://todolist-fullstack.onrender.com/register",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"todolist-fullstack",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"register"
 					]
@@ -235,7 +236,7 @@
 						"id": "80d096b6-c276-46b9-8f65-1f8b483dccb2",
 						"exec": [
 							"pm.test(\"Test status code /login\", function() {",
-							"    pm.response.to.have.status(400);",
+							"    pm.response.to.have.status(200);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -324,7 +325,7 @@
 						"id": "4a23a055-28f9-47f4-bd15-6185a5aff158",
 						"exec": [
 							"pm.test(\"Test status code /task/update\", function() {",
-							"    pm.response.to.have.status(404);",
+							"    pm.response.to.have.status(401);",
 							"})"
 						],
 						"type": "text/javascript"
