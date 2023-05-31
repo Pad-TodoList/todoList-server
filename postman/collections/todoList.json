@@ -15,7 +15,7 @@
 						"id": "138cdd88-72e8-4a1c-9e9a-d6e57e9b98cb",
 						"exec": [
 							"pm.test(\"Test status code /user/update\", function() {",
-							"    pm.response.to.have.status(404);",
+							"    pm.response.to.have.status(401);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -194,7 +194,7 @@
 						"id": "74b6bd5d-5710-4a0f-a27b-4aef7d703d32",
 						"exec": [
 							"pm.test(\"Test status code /register\", function() {",
-							"    pm.response.to.have.status(400);",
+							"    pm.response.to.have.status(403);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -236,7 +236,7 @@
 						"id": "80d096b6-c276-46b9-8f65-1f8b483dccb2",
 						"exec": [
 							"pm.test(\"Test status code /login\", function() {",
-							"    pm.response.to.have.status(400);",
+							"    pm.response.to.have.status(200);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -325,7 +325,7 @@
 						"id": "4a23a055-28f9-47f4-bd15-6185a5aff158",
 						"exec": [
 							"pm.test(\"Test status code /task/update\", function() {",
-							"    pm.response.to.have.status(404);",
+							"    pm.response.to.have.status(401);",
 							"})"
 						],
 						"type": "text/javascript"
