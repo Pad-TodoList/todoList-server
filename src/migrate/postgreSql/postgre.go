@@ -66,7 +66,6 @@ func (d Database) DeleteAccessToken(id string) models.DataAccessMessage {
 func connectToDatabase(d Database) *sql.DB {
 	psqlConn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", d.User, d.Password, d.Host, d.Port, d.DatabaseName)
 	db, err := sql.Open("postgres", psqlConn)
-	defer db.Close()
 	if err != nil {
 		return nil
 	}
